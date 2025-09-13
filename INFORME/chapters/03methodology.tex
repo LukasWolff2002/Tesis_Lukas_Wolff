@@ -1,0 +1,41 @@
+% cap3.tex
+
+\chapter{Methodology}
+\label{metodo} % la etiqueta para referencias
+
+\section{Particle Tracking Velocimetry Implementation}
+
+PTV is typically structured into three main steps, as illustrated in Figure \ref{ptvflowchar}: (i) particle detection, (ii) particle characterization, and (iii) particle tracking. Following these stages, a post-processing step is performed to refine the results and enhance the quality of the data analysis.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=1\textwidth]{Ilustraciones/Diapositiva2.jpeg}
+    \caption{PTV flowchart}
+    Source: Author's own elaboration.
+    \label{ptvflowchar}
+\end{figure}
+
+Since UHPC fibers often exhibit non-uniform surface properties, the light they reflect may vary along their length or be affected by suboptimal alignment with respect to the light source (see Figure \ref{fiberlight}). Consequently, conventional detection methods proved inadequate. To overcome this limitation, deep learning-based approaches were tested, as the literature has demonstrated their effectiveness in detecting small rod-like particles.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=1\textwidth]{Ilustraciones/Diapositiva5.jpeg}
+    \caption{Examples of fiber light reflection: (i) a group of fibers with suboptimal alignment relative to the light source, (ii) a well-illuminated fiber, and (iii) a fiber exhibiting non-uniform light reflection along its length.}
+    Source: Author's own elaboration.
+    \label{fiberlight}
+\end{figure}
+
+The Hough Transform was compared with YOLOv11 and SAM2 to evaluate their performance in detecting and tracking UHPC fibers. Both YOLO and SAM were trained using the same dataset, which consisted of two sets of images: (i) a low-density case with few fibers and no overlapping, and (ii) a high-density case with a larger number of fibers and overlapping, as Figure \ref{trainingdataset} shows.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=1\textwidth]{Ilustraciones/Diapositiva6.jpeg}
+    \caption{Representative examples from the training dataset: (a) image with a low concentration of well-separated fibers; (b) image with a high concentration of overlapping fibers and a significant presence of bubbles.}
+    Source: Author's own elaboration.
+    \label{trainingdataset}
+\end{figure}
+
+The results showed that the Hough Transform achieved low detection accuracy. Although some fibers were correctly identified as true positives (TP), the method also produced a high number of false positives (FP). In contrast, YOLOv11 demonstrated high precision, successfully detecting overlapping fibers while maintaining a low FP rate, as evidenced by the confusion matrix in Figure REFERENCIAR. Finally, SAM2 failed to produce any valid detections, resulting in all evaluation metrics being zero, as summarized in Table REFERENCIAR.
+
+
+

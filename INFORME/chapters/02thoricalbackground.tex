@@ -1,0 +1,265 @@
+% cap2.tex
+
+\chapter{Bibliographic Revision}
+\label{litRev} % la etiqueta para referencias
+
+Throughout this section, a comprehensive review of the literature will be provided. Based on the L-shape model proposed by \cite{huang2018improvement} to study UHPC flow dynamics, as illustrated in Figure \ref{lshapemodel} the discussion will focus on the fundamental principles, experimental methodologies, and numerical approaches.  Particular emphasis will be placed on Particle Image Velocimetry (PIV) and Particle Tracking Velocimetry (PTV) techniques, along with Discrete Element Method (DEM) and Computational Fluid Dynamics (CFD) frameworks, which together provide the experimental and numerical foundations for analyzing fiber dynamics in viscoplastic media.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Ilustraciones/Diapositiva4.jpeg}
+    \caption{L-shape model for UHPC flow analysis}
+    Source: Author's own elaboration.
+    \label{lshapemodel}
+\end{figure}
+
+% evitar el uso de páginas web o fuentes no formales de información. (Máximo 15 páginas). }
+\section{Multiphase Flow Simulation}
+
+To simulate the behavior of UHPC, a transparent non-Newtonian fluid with tunable rheological properties, known as Carbopol, is employed. As demonstrated by \cite{auernhammer2020transparent} Carbopol can effectively replicate the flow properties of UHPC. Furthermore, recent work by \cite{tapia2025} has provided a deeper understanding of its behavior under different shear rates and temperatures, offering valuable insights for the simulation process. The rheological properties of Carbopol obtained by Tapia, V. are presented in Figure \ref{carbopolrheology} where two concentrations of the fluid (0.2\% and 0.5\%) were tested.
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/carbopol-curves.png}
+    \caption{Rheological properties of Carbopol at different concentrations}
+    Source: Tapia, V. (2025)
+    \label{carbopolrheology}
+\end{figure}
+
+\subsection{Fluid Phase (CFD)}
+
+Computational Fluid Dynamics (CFD) was originally formalized by \cite{Roache1972}, who emphasized that fluid motion can be described through three fundamental conservation laws: (i) conservation of mass (continuity equation), (ii) conservation of momentum (Newton's second law applied to fluids), and (iii) conservation of energy (first law of thermodynamics applied to fluids). These are expressed as:
+
+% Conservación de la masa (ecuación de continuidad)
+\begin{equation}
+    \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{u}) = 0
+\end{equation}
+
+% Conservación de la cantidad de movimiento (Navier-Stokes)
+\begin{equation}
+    \rho \left( \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u} \cdot \nabla \mathbf{u} \right) 
+    = -\nabla p + \mu \nabla^2 \mathbf{u} + \rho \mathbf{g}
+\end{equation}
+
+% Conservación de la energía
+\begin{equation}
+    \rho \frac{De}{Dt} = -p \, \nabla \cdot \mathbf{u} + \Phi + \nabla \cdot (k \nabla T)
+\end{equation}
+
+Together, these equations form the basis of the Navier-Stokes equations, which govern the motion of fluid substances. For clarity, the same laws can also be expressed in index notation:
+
+% Continuidad
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \frac{\partial (\rho u_i)}{\partial x_i} = 0
+\end{equation}
+
+% Cantidad de movimiento
+\begin{equation}
+\rho\left(\frac{\partial u_i}{\partial t} + u_j \frac{\partial u_i}{\partial x_j}\right)
+= -\frac{\partial p}{\partial x_i}
++ \frac{\partial}{\partial x_j}\!\left[\mu\left(\frac{\partial u_i}{\partial x_j}
++ \frac{\partial u_j}{\partial x_i}\right) + \lambda\,\frac{\partial u_k}{\partial x_k}\delta_{ij}\right]
++ \rho g_i
+\end{equation}
+
+To solve the Navier-Stokes equations across the computational domain, the fluid is discretized into finite volume elements, enabling numerical approximation. The accuracy of this process depends on the shape, size, and arrangement of the elements. Therefore, mesh optimization is crucial to balance accuracy and computational cost, since the Navier-Stokes equations must be solved in every cell \cite{eymard2000finite}. Figure \ref{cfddomain} illustrates a typical CFD computational domain, highlighting two common mesh types used in simulations: tetrahedral and hexahedral elements.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{Ilustraciones/Diapositiva7.jpeg}
+    \caption{Example of a CFD computational domain, with two mesh types: tetrahedrons and hexahedrons.}
+    Source: Author's own elaboration.
+    \label{cfddomain}
+\end{figure}
+
+\subsection{Fiber Phase (DEM)}
+
+Based on Newton's laws of motion, the dynamics of a rod-like particle can be expressed as:
+
+\begin{equation}
+    m\frac{dv}{dt} = \sum F_c + F_d + F_b + mg
+\end{equation}
+
+\begin{equation}
+    I\frac{d\omega}{dt} = \sum T_c
+\end{equation}
+
+To simulate the behavior of rod-like particles, a Discrete Element Method (DEM) framework is implemented within a CFD-unresolved simulation. Several analytical approaches have been developed to estimate and detect contacts and forces on non-spherical particles. For example, \cite{favier1999shape} proposed representing elongated particles as a cluster of spheres, while \cite{williams1992superquadrics} introduced the use of ellipsoids and superquadrics, defined by:
+
+\begin{equation}
+    \left( \left| \frac{x}{a} \right|^{s_2} + \left| \frac{y}{b} \right|^{\tfrac{s_1}{s_2}} \right)^{\tfrac{s_1}{s_2}}
+    + \left| \frac{z}{c} \right|^{s_1} = 1
+\end{equation}
+
+The general DEM framework proposed by \cite{cundall1979discrete} reduces particle motion to translational and rotational components, expressed as:
+
+\begin{equation}
+    m_i\frac{dv_i}{dt} = \sum F_{c,i} + m_ig + f_{pf,i}
+\end{equation}
+
+\begin{equation}
+    \frac{d(I_i \omega_i)}{dt} = R_i \cdot (\sum M_{c,i} + M_{pf,i})
+\end{equation}
+
+Different approaches have been proposed to couple the fluid and fiber phases. Among them, one-way and two-way coupling methodologies are commonly used to simulate multiphase flows, in which the fluid phase is solved using CFD and the particle phase using DEM.
+
+\subsection{Phases Coupling (CFD-DEM)}
+
+In one-way coupling, the fluid influences particle motion, but the particles do not affect the fluid flow. This approach is suitable for dilute systems where particle-particle interactions are negligible. In contrast, two-way coupling accounts for the mutual interaction between the fluid and the particles, making it more appropriate for dense systems in which particle concentration significantly modifies the flow dynamics  \cite{guzman2023coupled}.
+
+Commercially, ANSYS provides specialized tools for such simulations, with Fluent used to solve the fluid phase and Rocky employed to model the discrete phase.
+
+\subsubsection{One-Way Coupling}
+
+In the one-way coupling regime (dilute suspensions, $\alpha_p \ll 1$), the fluid phase evolves independently of the particles (no feedback), while particles feel the fluid through hydrodynamic forces. The fluid equations reduce to the standard Navier-Stokes system without interphase source terms:
+
+\begin{equation}
+\frac{\partial \rho_f}{\partial t} + \nabla\cdot(\rho_f \mathbf{u}_f) = 0,
+\end{equation}
+\begin{equation}
+\rho_f\left(\frac{\partial \mathbf{u}_f}{\partial t} + \mathbf{u}_f\cdot\nabla \mathbf{u}_f\right)
+= -\nabla p + \nabla\cdot\boldsymbol{\tau}_f + \rho_f \mathbf{g},
+\qquad
+\boldsymbol{\tau}_f = \mu\left[\nabla \mathbf{u}_f + (\nabla \mathbf{u}_f)^{T}\right] + \lambda\,(\nabla\cdot \mathbf{u}_f)\,\mathbf{I}.
+\end{equation}
+
+Each particle $p$ is advanced in Lagrangian form by:
+
+\begin{equation}
+m_p \frac{d \mathbf{u}_p}{dt} = \mathbf{F}^{\text{hyd}}_p + m_p \mathbf{g} + \sum \mathbf{F}^{c}_p,
+\qquad
+\mathbf{x}_p' = \mathbf{u}_p,
+\end{equation}
+\begin{equation}
+\mathbf{I}_p \frac{d \boldsymbol{\omega}_p}{dt} = \mathbf{T}^{\text{hyd}}_p + \sum \mathbf{T}^{c}_p,
+\end{equation}
+
+where $\mathbf{F}^{\text{hyd}}_p$ and $\mathbf{T}^{\text{hyd}}_p$ collect hydrodynamic interactions (e.g., drag, buoyancy, pressure-gradient, lift, added mass) evaluated from the local fluid field $(\rho_f,\,\mathbf{u}_f,\,p)$, and $\sum \mathbf{F}^{c}_p$, $\sum \mathbf{T}^{c}_p$ are contact forces/torques from DEM (collisions, friction, etc.). No momentum is fed back to the fluid in this regime:
+\[
+\mathbf{S}_m(\mathbf{x},t) = \mathbf{0}.
+\]
+
+\subsubsection{Two-Way Coupling}
+
+In the two-way coupling regime (moderate to dense suspensions), particles exchange momentum and energy with the fluid. The fluid equations include porosity $\alpha_f=1-\alpha_p$ and interphase source terms:
+
+\begin{equation}
+\frac{\partial (\alpha_f \rho_f)}{\partial t} + \nabla\cdot(\alpha_f \rho_f \mathbf{u}_f) = 0,
+\end{equation}
+\begin{equation}
+\frac{\partial (\alpha_f \rho_f \mathbf{u}_f)}{\partial t}
++ \nabla\cdot(\alpha_f \rho_f \mathbf{u}_f \mathbf{u}_f)
+= -\,\alpha_f \nabla p + \nabla\cdot(\alpha_f \boldsymbol{\tau}_f)
++ \alpha_f \rho_f \mathbf{g} + \mathbf{S}_m,
+\end{equation}
+
+The momentum source $\mathbf{S}_m$ is the volumetric feedback from particles to the fluid. In discrete form, for a control volume (cell) $c$ of volume $V_c$:
+
+\begin{equation}
+\mathbf{S}_{m,c}(t) \;=\; -\,\frac{1}{V_c}\sum_{p \in c} \mathbf{F}^{\text{hyd}}_{p}(t),
+\end{equation}
+
+The particle updates remain Lagrangian but now the same hydrodynamic forces that accelerate particles are \emph{exactly} returned to the fluid with opposite sign:
+
+\begin{equation}
+m_p \frac{d \mathbf{u}_p}{dt} = \mathbf{F}^{\text{hyd}}_p + m_p \mathbf{g} + \sum \mathbf{F}^{c}_p,
+\qquad
+\mathbf{I}_p \frac{d \boldsymbol{\omega}_p}{dt} = \mathbf{T}^{\text{hyd}}_p + \sum \mathbf{T}^{c}_p,
+\end{equation}
+\begin{equation}
+\alpha_{p,c} \;=\; \frac{1}{V_c}\sum_{p \in c} V_p, 
+\qquad
+\alpha_{f,c} \;=\; 1-\alpha_{p,c},
+\end{equation}
+
+where $V_p$ is the volume of the particle (or fiber), and $\alpha_{p,c}$ is the volume fraction in cell $c$.
+
+To validate both fluid and particle motion, non-intrusive experimental methodologies have been developed such as PIV for capturing velocity fields and PTV for resolving particle trajectories.
+
+\section{Particle Image Velocimetry}
+
+Particle Image Velocimetry (PIV) is an optical flow visualization technique used to obtain instantaneous velocity measurements and related properties in fluids, enabling the reconstruction of Eulerian velocity fields \cite{raffel2018particle} through image correlation methods. The fluid is seeded with tracer particles that are assumed to accurately follow the flow dynamics. These particles are illuminated by a laser sheet, as shown in Figure \ref{pivsetup} which presents the setup implemented by \cite{maggi2023} at Universidad de los Andes. The particle motion is captured using a high-speed camera, and the recorded images are subsequently analyzed to determine the velocity field of the fluid.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=1\textwidth]{Ilustraciones/Diapositiva3.jpeg}
+    \caption{PIV setup based on the L-Shape model}
+    Source: Author's own elaboration.
+    \label{pivsetup}
+\end{figure}
+
+\section{Particle Tracking Velocimetry}
+
+While PIV enables the study of Eulerian velocity fields, Particle Tracking Velocimetry (PTV) provides a Lagrangian perspective, resolving the motion of individual particles with high temporal resolution \cite{maas1993particle}.
+
+Although PIV used an iluminated plane to capture the motion of particles, PTV requires a volumetric approach to accurately track the three-dimensional trajectories and rotation of particles. Thus, and based on the PIV setup, volumetric ilumination leds where used to capture the motion of particles within a defined volume, as Figure \ref{ptvsetup2} shows.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{Ilustraciones/Diapositiva1.jpeg}
+    \caption{PTV setup based on volumetric illumination}
+    Source: Author's own elaboration.
+    \label{ptvsetup2}
+\end{figure}
+
+Since PTV must be self-implemented for this work, a more detailed literature review was conducted, with particular emphasis on particle detection and tracking methodologies.
+
+\subsection{Particle Detection}
+
+Several methodologies have been developed for particle detection in PTV, ranging from traditional computational algorithms such as the Hough Transform, Canny filtering, and edge detection, as reviewed in \cite{seyfi2024simultaneous} to more recent approaches based on deep learning, which have demonstrated superior reliability compared to classical methods \cite{plaksyvyi2023}. In particular, segmentation models have shown strong robustness and performance, as reported by \cite{qamar2024segmentation} where a YOLO-based model was successfully applied to small rod-like particles. Throughout this work, conventional algorithms are compared with deep learning-based models to assess their effectiveness in detecting and tracking UHPC fibers in a viscoplastic medium.
+
+The performance of these detection methodologies is often evaluated using confusion matrices, which provide a comprehensive overview of the model's predictive capabilities. These matrices summarize the counts of true positives (TP), false positives (FP), true negatives (TN), and false negatives (FN), allowing for the calculation of key metrics such as precision, recall, F1-score and Intersection over Union (IoU) as \cite{everingham2015pascal} defined:
+
+\begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+\begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+\begin{equation}
+    \text{F1 Score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+\begin{equation}
+    \text{IoU} = \frac{TP}{TP + FP + FN}
+\end{equation}
+
+\subsection{Particle Correlation}
+
+Once particles are detected, they need to be linked across consecutive frames. Based on the characteristics and motion of each rod-like particle, it becomes possible to reliably identify and track individual fibers over time. Several tracking methods have been developed for this purpose, including nearest-neighbor approaches, Kalman filtering, and more advanced deep learning-based techniques. In the present work, an $\alpha$-$\beta$-$\gamma$ filter \cite{tenne2000optimal} and \cite{gray1993derivation} derived from the Kalman filter \cite{welch1995introduction} was implemented. This filter uses the known state of an object $Z_n$ (position, velocity, and acceleration) together with a prediction-correction scheme to estimate its future state, based on the present state $\hat{X}_{n,n-1}$, while continuously updating the prediction by incorporating new measurements. This approach allows for robust tracking of fibers even in the presence of noise or partial occlusions. 
+
+\begin{equation}
+    \hat{X}_{n,n-1} = \hat{X}_{n-1,n-1} + K_n \cdot (Z_n - \hat{X}_{n,n-1})
+\end{equation}
+
+$K_n$ is known as Kalman gain, which determines the weight given to the new measurement versus the prediction. The filter parameters $\alpha$, $\beta$, and $\gamma$ control the responsiveness of the filter to changes in position, velocity, and acceleration, respectively both lineal an angular movements:
+
+\begin{equation}
+    \hat{X}_{n,n-1} = \hat{X}_{n-1,n-1} + \alpha \cdot (Z_n - \hat{X}_{n,n-1})
+\end{equation}
+
+\begin{equation}
+    \dot{\hat{X}}_{n,n-1} = \dot{\hat{X}}_{n-1,n-1} + \beta \cdot (Z_n - \hat{X}_{n,n-1}) / \Delta t
+\end{equation}
+
+\begin{equation}
+    \ddot{\hat{X}}_{n,n-1} = \ddot{\hat{X}}_{n-1,n-1} + \gamma \cdot (Z_n - \hat{X}_{n,n-1}) / (2 \cdot \Delta t^2)
+\end{equation}
+
+Then, it is necessary update the model to time variation between each frame, as all the variables experience a change, basic dynamic equation should be applied to obtain the corresponding data as the followings equations show: 
+
+\begin{equation}
+    \hat{X}_{n,n} = \hat{X}_{n,n-1} + \dot{\hat{X}}_{n,n-1} \cdot \Delta t + \frac{1}{2} \cdot \ddot{\hat{X}}_{n,n-1} \cdot \Delta t^2
+\end{equation}
+
+\begin{equation}
+    \dot{\hat{X}}_{n,n} = \dot{\hat{X}}_{n,n-1} + \ddot{\hat{X}}_{n,n-1} \cdot \Delta t
+\end{equation}
+
+\begin{equation}
+    \ddot{\hat{X}}_{n,n} = \ddot{\hat{X}}_{n,n-1}
+\end{equation}
+
+Therefore, it is possible to take the current fiber parameters and use them as input for the $\alpha$-$\beta$-$\gamma$ filter for each fiber, where $\Delta t = 1/fps$. This will output a virtual fiber corresponding to each fiber recognized in the previous frame. The virtual fiber that satisfies all the criteria will be linked to the newly detected fiber. Additionally, when each particle is first detected, the initial linear and angular velocity and the acceleration are assumed to be zero, regardless of the time instant.
+
+

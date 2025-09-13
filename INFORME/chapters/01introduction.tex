@@ -1,0 +1,54 @@
+% cap1.tex
+\chapter{Introduction}
+\label{intro} % la etiqueta para referencias
+
+Concrete is ubiquitous: it can be found in every house, town, city, and country, regardless of the level of development, wealth, or political foundation of the region. It is such a versatile material—initially fluid, but hardening over time into a rock-like solid—that it can be used in countless applications, from the foundation of a small house to the construction of bridges and skyscrapers. Concrete is composed of three main components: cement, water, and aggregates (such as sand, gravel, or stone). Together, these elements constitute the most widely used construction material worldwide, with global demand projected to increase by approximately $12\%$ - $23\%$ by 2050 \cite{cheng2023projecting}.
+
+Cement production alone is responsible for $8\%$ of global $CO_2$ emissions \cite{winnefeld2022}. When the water demand and the emissions from construction activities are also considered, it becomes clear that concrete production accounts for a significant percentage of annual $CO_2$ emissions worldwide. For this reason, several restrictions and sustainable practices are being adopted, such as the use of recycled aggregates or alternative cementitious materials (e.g., fly ash, slag, or silica fume), which reduce the amount of cement required in concrete production and extend the service life of structures.
+
+Concrete exhibits excellent compressive strength (around 30 MPa) but relatively poor tensile strength (around 3 MPa). To overcome this limitation, steel reinforcement is commonly used to enhance tensile resistance. However, reinforcement introduces durability issues, as steel is prone to corrosion. Chlorides can penetrate the porous structure and microcracks of the concrete, leading to steel corrosion, a reduction in structural integrity, and increased maintenance costs.
+
+Ultra-High-Performance Concrete (UHPC) has been developed to address these challenges, with the aim of improving durability and extending the lifespan of concrete structures. UHPC is characterized by very high compressive strength (around 150 MPa), extremely low permeability, and excellent resistance to environmental factors such as freeze–thaw cycles and chemical attack. These properties are achieved by incorporating high-quality materials such as silica fume, superplasticizers, and steel fibers, which greatly enhance the mechanical and durability performance of the composite.
+
+Silica fume, superplasticizers, and a well-graded aggregate system increase the density of the cementitious matrix, lowering the water-to-cement ratio and reducing internal voids. This densification enhances the overall compactness of the concrete, leading to higher compressive strength and reduced permeability, due to the significant decrease in porosity.
+Steel fibers, in turn, are incorporated to improve the tensile behavior of UHPC (typically around 15 MPa) by providing distributed reinforcement throughout the matrix. Their inclusion has been shown to substantially enhance the post-cracking performance of the material [CITAR], allowing it to sustain higher loads and larger deformations without brittle failure. Nevertheless, the effectiveness of steel fibers strongly depends on their orientation and dispersion within the cementitious matrix. Undesirable alignment or clustering can significantly limit their contribution, reducing the tensile strength and overall efficiency of UHPC.
+
+Currently, the study of steel fiber behavior relies primarily on experimental methods, where full-scale (1:1) specimens are tested under controlled conditions to analyze fiber orientation under specific circumstances. While valuable, this methodology is highly inefficient: it involves substantial costs, lacks scalability, and does not allow for rapid iteration across multiple variables.
+
+To address these limitations, multiphase Computational Fluid Dynamics (CFD) simulations are proposed as a more effective approach for investigating fiber behavior. Such simulations enable the iterative exploration of both intrinsic UHPC properties—such as rheology—and external factors, including placement techniques, mold geometry, and container dimensions.
+
+To validate the proposed CFD framework, it is necessary to obtain experimental data of UHPC in its fresh state. For this purpose, a Carbopol solution (a transparent, shear-tunable fluid) will be employed as a substitute for UHPC, allowing controlled experiments to be conducted. Particle Image Velocimetry (PIV), as currently implemented at the university by Cristóbal Maggy and Valentina Tapia, will be used to capture the velocity field of the fluid. In addition, it is essential to analyze how steel fibers behave within the fluid matrix, for which the Particle Tracking Velocimetry (PTV) technique will be self-implemented.
+
+\section{Hypothesis}
+
+Particle concentration can significantly influence the rheological properties of a fluid and, consequently, its flow behavior. This, in turn, affects the final orientation of the particles and thereby the mechanical properties of the composite material (UHPC in this case). It is therefore essential to understand both how individual particles interact with the surrounding fluid and how the collective behavior of the particles modifies the global flow dynamics.
+
+Based on this premise, it is hypothesized that a Discrete Element Method (DEM) coupled with a Computational Fluid Dynamics (CFD) simulation, validated through PIV and PTV techniques, can accurately reproduce the dynamics of particles suspended in a non-Newtonian fluid and, consequently, predict the final orientation of fibers in a UHPC mix.
+
+Such a simulation could be applied to optimize UHPC mix designs, placement techniques, and mold geometries, thereby maximizing the mechanical performance of the final composite material. This approach provides a cost-effective alternative to full-scale experimental testing.
+
+To fully validate this hypothesis, the following objectives are proposed:
+
+\section{Objectives}
+
+\subsection{General Objective}
+
+The general objective of this thesis is to develop a CFD–DEM simulation capable of accurately predicting the dynamics of steel fibers in a Carbopol suspension, validated through PIV and PTV techniques.
+
+\section{Specific Objectives}
+
+To fully achieve the general objective, the following specific objectives are proposed:
+
+\begin{enumerate}
+    \item Implement a Particle Tracking Velocimetry (PTV) algorithm to analyze the motion of steel fibers in a Carbopol suspension.
+    \item Validate the PTV implementation by comparing its results with existing experimental data.
+    \item Develop and validate a CFD simulation of a Carbopol suspension, using PIV data for validation.
+    \item Integrate a Discrete Element Method (DEM) to simulate the motion of steel fibers within the CFD framework.
+    \item Validate the coupled CFD–DEM simulation using PTV data for fiber motion.
+    \item Analyze the influence of particle concentration on the rheological properties of the Carbopol suspension and its effect on fiber orientation.
+    \item Use the validated CFD–DEM model to predict fiber orientation in various Carbopol mix designs and placement techniques.
+\end{enumerate}
+
+\section{Thesis Structure}
+
+AL FINAL PONER TODOS LOS CAPITULOS
